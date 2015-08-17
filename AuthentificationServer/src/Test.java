@@ -1,11 +1,13 @@
+import java.io.File;
 import java.util.Map;
+import java.util.Properties;
 
 public class Test {
 	public static void main(String[] args) {
-		Map<String, String> m =System.getenv();
+		System.out.println(System.getProperty("java.class.path"));
 		
-		for (String s : m.keySet()) {
-			System.out.println(s +" -> "+ m.get(s));
-		}
+		
+		
+		
 	}
 }

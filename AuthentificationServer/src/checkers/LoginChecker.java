@@ -11,8 +11,6 @@ public class LoginChecker {
 	private DBMapper database;
 	
 	public LoginChecker() {
-		database = new DBMapper();
-		database.init();
 	}
 	
 	private boolean isLoginCorrect(String login, String pwd) {
