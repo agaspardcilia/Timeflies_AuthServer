@@ -1,8 +1,29 @@
-import java.security.SecureRandom;
+import handlers.ConnectionsHandler;
+import settings.SettingsManager;
+import utils.ConsoleDisplay;
 
 public class Launcher {
+
 	public static void main(String[] args) {
-		System.out.println("Hello world!");
+		ConsoleDisplay.display_splash();
+		
+		ConnectionsHandler connectionHandler = null;
+		
+		
+		try {
+			SettingsManager.initSettings();
+			connectionHandler = new ConnectionsHandler();
+			
+		} catch (Exception e) {
+			ConsoleDisplay.display_errorNotice("Failed to initialize. Stopping the program.");
+			e.printStackTrace();
+			return;
+		}
+		
+		Thread connectionHandlerThread = new Thread(connectionHandler);
+		
 		
 	}
+	
+	
 }
