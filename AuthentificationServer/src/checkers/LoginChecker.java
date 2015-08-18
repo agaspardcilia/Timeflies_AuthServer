@@ -2,26 +2,20 @@ package checkers;
 
 import java.util.UUID;
 
-import javax.naming.AuthenticationException;
-
+import exceptions.AuthentificationException;
 import messages.LoginRequest;
-import utils.DBMapper;
 
 public class LoginChecker {
-	private DBMapper database;
 	
-	public LoginChecker() {
-	}
-	
-	private boolean isLoginCorrect(String login, String pwd) {
+	private static boolean isLoginCorrect(String login, String pwd) {
 		return true;
 	}
 	
-	public UUID connect(LoginRequest request) throws AuthenticationException {
+	public static UUID connect(LoginRequest request) throws AuthentificationException {
 		if(isLoginCorrect(request.getLogin(), request.getPassWord())) {
 			return UUID.randomUUID();
 		} else {
-			throw new AuthenticationException();
+			throw new AuthentificationException();
 		}
 	}
 }
