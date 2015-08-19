@@ -1,13 +1,8 @@
 package handlers;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 
-import javax.naming.AuthenticationException;
-
-import checkers.LoginChecker;
 import settings.SettingsManager;
 import utils.ConsoleDisplay;
 
@@ -34,9 +29,9 @@ public class ConnectionsHandler implements Runnable {
 		while (true) { //TODO define an end of loop condition.
 			try {
 				thread = new Thread(new AuthHandler(serverSocket.accept()));
+				thread.start();
 			} catch (IOException e) {
-				
-				e.printStackTrace();
+				ConsoleDisplay.printStack(e);
 			}
 		}
 	}

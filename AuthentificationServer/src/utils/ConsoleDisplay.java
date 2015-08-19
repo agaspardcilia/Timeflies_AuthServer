@@ -5,6 +5,8 @@ public class ConsoleDisplay {
 	private final static String VERSION = "0.0.1";
 	private final static String AUTHOR = "A.Gaspard Cilia";
 	
+	public static boolean debug = false;
+	
 	public static void display_splash() {
 		System.out.println();
 		System.out.println(PROGRAM_NAME + " v" + VERSION + ".");
@@ -31,4 +33,10 @@ public class ConsoleDisplay {
 	public static void display_startNoticeFail() {
 		System.out.println("[FAIL]");
 	}
+	
+	public static void printStack(Exception e) {
+		if (debug)
+			e.printStackTrace();
+	}
+	
 }
