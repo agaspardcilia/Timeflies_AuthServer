@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * @author alexandre
+ * ConsoleDisplay.java
+ * If you need to display something, use this.
+ */
 public class ConsoleDisplay {
 	private final static String PROGRAM_NAME = "Timeflies authentification server";
 	private final static String VERSION = "0.0.1";

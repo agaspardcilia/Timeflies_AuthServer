@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * @author alexandre
+ * LibChecker.java
+ * Check dependencies.
+ */
 public class LibChecker {
 
 	public static void check() throws Exception {

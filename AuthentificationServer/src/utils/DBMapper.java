@@ -7,6 +7,11 @@ import java.sql.DriverManager;
 import settings.DataBaseSettings;
 import settings.SettingsManager;
 
+/**
+ * @author alexandre
+ * DBMapper.java
+ * Database connection.
+ */
 public class DBMapper {
 	private static Connection database;
 	
