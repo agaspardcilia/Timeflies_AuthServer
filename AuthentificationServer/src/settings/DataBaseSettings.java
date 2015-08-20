@@ -4,6 +4,26 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * @author alexandre
+ * DatabaseSettings.java
+ * This class contains login informations of the database.
+ * The xml documents must be placed at the root of the program directory and be named "DBLogs.xml".
+ * This documents must contains the following lines filled with correct informations :
+ * 
+ * <root>
+ * 		<logs>
+ * 			<username>[Your username here]</username>
+ * 			<pwd>[Your password here]</pwd>
+ * 		</logs>
+ * 		<address>
+ * 			<url>[Server's address]</url>
+ * 			<port>[Server's port]</port>
+ * 		</address>
+ * </root>
+ * 
+ * 
+ */
 public class DataBaseSettings {
 	private final static String LOGS = "logs";
 	private final static String ADDRESS = "address";

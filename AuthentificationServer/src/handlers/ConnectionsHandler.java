@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import settings.SettingsManager;
 import utils.ConsoleDisplay;
 
+//XXX Not tested yet.
 public class ConnectionsHandler implements Runnable {
 	private ServerSocket serverSocket;
 	
