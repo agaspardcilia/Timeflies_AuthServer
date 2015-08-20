@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
  * 		<address>
  * 			<url>[Server's address]</url>
  * 			<port>[Server's port]</port>
+ * 			<dbname>[Database name]</dbname>
  * 		</address>
  * </root>
  * 
@@ -31,13 +32,14 @@ public class DataBaseSettings {
 	private final static String PWD = "pwd";
 	private final static String URL = "url";
 	private final static String PORT = "port";
+	private final static String DBNAME = "dbname";
 
 
 	private String username;
 	private String password;
 	private String address;
 	private int port;
-
+	private String dbName;
 
 
 	public DataBaseSettings(Element xmlRoot) {
@@ -56,8 +58,9 @@ public class DataBaseSettings {
 				this.address = address.item(i).getTextContent();
 			else if (address.item(i).getNodeName().equals(PORT))
 				port = Integer.parseInt(address.item(i).getTextContent());
+			else if (address.item(i).getNodeName().equals(DBNAME))
+				dbName = address.item(i).getTextContent();
 		}		
-
 	}
 
 	public String getUsername() {
@@ -79,7 +82,9 @@ public class DataBaseSettings {
 		return port;
 	}
 
-
+	public String getDbName() {
+		return dbName;
+	}
 
 
 }

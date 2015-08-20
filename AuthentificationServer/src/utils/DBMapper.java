@@ -17,13 +17,14 @@ public class DBMapper {
 	
 	
 	public static  void init() throws Exception {
+		
 		ConsoleDisplay.display_startNotice("database connection");
 		
 		DataBaseSettings dbSettings = SettingsManager.getDataBaseSettings();
 		
 		try {
-			database = DriverManager.getConnection("jdbc:postgresql://" + dbSettings.getAddress() + ":" + dbSettings.getPort(),
-					dbSettings.getUsername(), dbSettings.getPassword());
+			database = DriverManager.getConnection("jdbc:postgresql://" + dbSettings.getAddress() + ":" + dbSettings.getPort() 
+			+ "/" + dbSettings.getDbName(),	dbSettings.getUsername(), dbSettings.getPassword());
 		} catch (Exception e) {
 			ConsoleDisplay.display_startNoticeFail();
 			throw e;
