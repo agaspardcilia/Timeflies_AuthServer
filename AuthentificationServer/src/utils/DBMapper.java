@@ -3,6 +3,9 @@ package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import settings.DataBaseSettings;
 import settings.SettingsManager;
@@ -35,5 +38,22 @@ public class DBMapper {
 	
 	public static Connection getDatabase(){
 		return database;
+	}
+	
+	public static ResultSet executeQuery(String query) throws SQLException {
+		if (database == null) {
+			ConsoleDisplay.display_errorNotice("ERROR : Can't execute any query : no connection to database.");
+			return null;
+		}
+		
+		try {
+			Statement stat = database.createStatement();
+			return stat.executeQuery(query);
+			
+		} catch (SQLException e) {
+			ConsoleDisplay.display_errorNotice("ERROR : Statement creation failed.");
+			throw e;
+		}
+		
 	}
 }
