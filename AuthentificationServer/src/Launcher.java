@@ -1,4 +1,7 @@
+import java.util.Scanner;
+
 import handler.args.ArgsHandler;
+import handler.args.handlers.TestModeHandler;
 import handlers.ConnectionsHandler;
 import settings.SettingsManager;
 import utils.ConsoleDisplay;
@@ -28,8 +31,25 @@ public class Launcher {
 		}
 		
 		
+		if (TestModeHandler.isTestMode()) {
+			ConsoleDisplay.display_notice("Test mode enable.");
+			
+			String username;
+			String password;
+			char[] tmp;
+			Scanner sc = new Scanner(System.in);
+			
+			System.out.print("Username : ");
+			username = sc.nextLine();
+			
+			System.out.print("Password : ");
+//			tmp = System.console().readPassword();
+			
+		} else {
+			Thread connectionHandlerThread = new Thread(connectionHandler);
+			
+		}
 		
-		Thread connectionHandlerThread = new Thread(connectionHandler);
 		
 		
 	}

@@ -18,7 +18,7 @@ public class TestModeHandler extends GenericArgsHandler{
 		testMode = true;
 	}
 
-	public static boolean isDebugMode() {
+	public static boolean isTestMode() {
 		return testMode;
 	}
 }
