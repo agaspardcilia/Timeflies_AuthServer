@@ -1,8 +1,13 @@
+import java.io.Console;
 import java.util.Scanner;
+import java.util.UUID;
 
+import checkers.LoginChecker;
+import exceptions.AuthentificationException;
 import handler.args.ArgsHandler;
 import handler.args.handlers.TestModeHandler;
 import handlers.ConnectionsHandler;
+import messages.LoginRequest;
 import settings.SettingsManager;
 import utils.ConsoleDisplay;
 import utils.DBMapper;
@@ -36,14 +41,28 @@ public class Launcher {
 			
 			String username;
 			String password;
-			char[] tmp;
 			Scanner sc = new Scanner(System.in);
 			
 			System.out.print("Username : ");
 			username = sc.nextLine();
 			
 			System.out.print("Password : ");
-//			tmp = System.console().readPassword();
+			//Only works with a shell terminal.
+			if (System.console() != null) {
+				password = new String(System.console().readPassword());
+			} else {
+				password = sc.nextLine();
+			}
+			
+			LoginRequest request = new LoginRequest(username, password);
+			try {
+				UUID token = LoginChecker.checkLogin(request);
+				System.out.println("token : " + token);
+			} catch (AuthentificationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 		} else {
 			Thread connectionHandlerThread = new Thread(connectionHandler);

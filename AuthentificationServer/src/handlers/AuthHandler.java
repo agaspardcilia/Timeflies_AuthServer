@@ -46,7 +46,7 @@ public class AuthHandler implements Runnable {
 
 		//login/pwd check
 		try {
-			token = LoginChecker.connect(request);
+			token = LoginChecker.checkLogin(request);
 			out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.SUCCESS, token));
 		} catch (AuthentificationException e) {
 			try {
