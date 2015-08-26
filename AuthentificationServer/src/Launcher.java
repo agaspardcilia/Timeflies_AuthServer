@@ -1,4 +1,7 @@
 import java.io.Console;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -14,13 +17,13 @@ import utils.DBMapper;
 import utils.LibChecker;
 
 public class Launcher {
-	
-	
+
+
 	public static void main(String[] args) {
-		
-		
+
+
 		ConsoleDisplay.display_splash();
-		
+
 		ConnectionsHandler connectionHandler = null;
 		try {
 			ArgsHandler.init(args);
@@ -34,44 +37,70 @@ public class Launcher {
 				e.printStackTrace();
 			return;
 		}
-		
-		
+
+
 		if (TestModeHandler.isTestMode()) {
 			ConsoleDisplay.display_notice("Test mode enable.");
-			
+
 			String username;
 			String password;
 			Scanner sc = new Scanner(System.in);
-			
+
 			System.out.print("Username : ");
 			username = sc.nextLine();
-			
+
 			System.out.print("Password : ");
 			//Only works with a shell terminal.
 			if (System.console() != null) {
-				password = new String(System.console().readPassword());
+				password = sha1(new String(System.console().readPassword()));
 			} else {
-				password = sc.nextLine();
+				password = sha1(sc.nextLine());
 			}
-			
+
 			LoginRequest request = new LoginRequest(username, password);
+
+			UUID token;
 			try {
-				UUID token = LoginChecker.checkLogin(request);
+				token = LoginChecker.checkLogin(request);
 				System.out.println("token : " + token);
 			} catch (AuthentificationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
+			sc.close();
+
 		} else {
 			Thread connectionHandlerThread = new Thread(connectionHandler);
-			
+
 		}
-		
-		
-		
+
+
+
 	}
-	
-	
+
+
+	public static String sha1(String message){
+		String digest = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
+			byte[] hash = md.digest(message.getBytes("UTF-8"));
+
+			//converting byte array to Hexadecimal String
+			StringBuilder sb = new StringBuilder(2*hash.length);
+			for(byte b : hash){
+				sb.append(String.format("%02x", b&0xff));
+			}
+
+			digest = sb.toString();
+
+		} catch (UnsupportedEncodingException ex) {
+		} catch (NoSuchAlgorithmException ex) {
+		}
+		return digest;
+	}
+
+
+
+
 }
