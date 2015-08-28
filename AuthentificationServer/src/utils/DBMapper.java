@@ -3,6 +3,7 @@ package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,15 +41,18 @@ public class DBMapper {
 		return database;
 	}
 	
-	public static ResultSet executeQuery(String query) throws SQLException {
+	public static ResultSet executeQuery(String query, String... param) throws SQLException {
 		if (database == null) {
 			ConsoleDisplay.display_errorNotice("ERROR : Can't execute any query : no connection to database.");
 			return null;
 		}
 		
 		try {
-			Statement stat = database.createStatement();
-			return stat.executeQuery(query);
+			PreparedStatement stat = database.prepareStatement(query);
+			for (int i = 0; i < param.length; i++) 
+				stat.setString(i, param[i]);
+			
+			return stat.executeQuery();
 			
 		} catch (SQLException e) {
 			ConsoleDisplay.display_errorNotice("ERROR : Statement creation failed.");

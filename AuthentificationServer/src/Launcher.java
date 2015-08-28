@@ -64,8 +64,7 @@ public class Launcher {
 				token = LoginChecker.checkLogin(request);
 				System.out.println("token : " + token);
 			} catch (AuthentificationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Authentification failed.");
 			}
 
 			sc.close();

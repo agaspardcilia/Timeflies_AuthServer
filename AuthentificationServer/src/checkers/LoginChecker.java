@@ -6,18 +6,21 @@ import java.util.UUID;
 
 import exceptions.AuthentificationException;
 import messages.LoginRequest;
+import utils.ConsoleDisplay;
 import utils.DBMapper;
 
 public class LoginChecker {
-	
+	private final static String QUERY = "SELECT * FROM utilisateur WHERE pseudo = ? AND mdp = ?;";
 	
 	private static boolean isLoginCorrect(String login, String pwd) {
 		ResultSet res;
 		try {
-			res = DBMapper.executeQuery("SELECT * FROM utilisateur WHERE pseudo = " + login + " ;");
-			System.out.println("fetch size : " + res.getFetchSize());
-			return res.getFetchSize() != 1;
-		} catch (SQLException e) {}
+			res = DBMapper.executeQuery("SELECT * FROM utilisateur WHERE pseudo = '" + login + "' AND mdp = '" + pwd + "';");
+			return res.next();
+		} catch (SQLException e) {
+			if (ConsoleDisplay.debug)
+				e.printStackTrace();
+		}
 		
 		return false;
 	}
