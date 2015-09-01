@@ -15,7 +15,7 @@ public class LoginChecker {
 	private static boolean isLoginCorrect(String login, String pwd) {
 		ResultSet res;
 		try {
-			res = DBMapper.executeQuery("SELECT * FROM utilisateur WHERE pseudo = '" + login + "' AND mdp = '" + pwd + "';");
+			res = DBMapper.executeQuery(QUERY, login, pwd);
 			return res.next();
 		} catch (SQLException e) {
 			if (ConsoleDisplay.debug)
