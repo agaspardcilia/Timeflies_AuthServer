@@ -49,8 +49,9 @@ public class DBMapper {
 		
 		try {
 			PreparedStatement stat = database.prepareStatement(query);
-			for (int i = 0; i < param.length; i++) 
-				stat.setString(i, param[i]);
+			for (int i = 0; i < param.length; i++) {
+				stat.setString(i+1, param[i]);
+			}
 			
 			return stat.executeQuery();
 			

@@ -70,7 +70,7 @@ public class Launcher {
 
 		} else {
 			Thread connectionHandlerThread = new Thread(connectionHandler);
-
+			connectionHandlerThread.start();
 		}
 
 

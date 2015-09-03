@@ -44,4 +44,9 @@ public class ConsoleDisplay {
 			e.printStackTrace();
 	}
 	
+	public static void display_debug(String s) {
+		if (debug)
+			System.out.println("Debug : " + s);
+	}
+	
 }

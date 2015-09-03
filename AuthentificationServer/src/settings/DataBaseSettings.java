@@ -34,7 +34,6 @@ public class DataBaseSettings {
 	private final static String PORT = "port";
 	private final static String DBNAME = "dbname";
 
-
 	private String username;
 	private String password;
 	private String address;

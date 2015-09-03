@@ -28,6 +28,8 @@ public class AuthHandler implements Runnable {
 		LoginRequest request = null;
 		UUID token;
 		
+		ConsoleDisplay.display_debug(socket.getInetAddress() + " is performing a connection attemp.");
+		
 		//init streams
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
