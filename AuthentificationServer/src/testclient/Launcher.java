@@ -1,5 +1,7 @@
 package testclient;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,7 +34,8 @@ public class Launcher {
 
 		try {
 			Socket socket = new Socket(InetAddress.getByName(serverAddress), port);
-
+			System.out.println("Socket : " + socket);
+			
 			if (socket.isConnected())
 				System.out.println("Connection successfull.");
 			else {
@@ -42,9 +45,9 @@ public class Launcher {
 			
 			System.out.println("Loading streams...");
 			//XXX Problem here : streams are nerver created.
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			
+			ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+			ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+			System.out.println("Streams loaded.");
 			System.out.print("login : ");
 			login = sc.nextLine();
 			System.out.print("password : ");

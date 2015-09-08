@@ -1,5 +1,7 @@
 package handlers;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,8 +34,8 @@ public class AuthHandler implements Runnable {
 		
 		//init streams
 		try {
-			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+			out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 		} catch (IOException e) {
 			ConsoleDisplay.display_errorNotice(socket.getInetAddress().toString() + " : Failed to create streams.");
 			return;
