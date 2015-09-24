@@ -13,6 +13,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
+import checkers.LoginChecker;
+import messages.LoginAnswer;
 import messages.LoginRequest;
 
 /**
@@ -21,7 +23,7 @@ import messages.LoginRequest;
  */
 public class Launcher {
 	public static void main(String[] args) {
-		String serverAddress = "localhost";
+		String serverAddress = "127.0.0.1";
 		int port = 42666;
 
 		String login;
@@ -44,10 +46,10 @@ public class Launcher {
 			}
 			
 			System.out.println("Loading streams...");
-			//XXX Problem here : streams are nerver created.
-			ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-			ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			System.out.println("Streams loaded.");
+			
 			System.out.print("login : ");
 			login = sc.nextLine();
 			System.out.print("password : ");
@@ -57,7 +59,29 @@ public class Launcher {
 
 			out.writeObject(new LoginRequest(login, pwd));
 
-
+			try {
+				LoginAnswer ans = (LoginAnswer)in.readObject();
+				
+				switch (ans.getAnswer()) {
+				case SUCCESS :
+					System.out.println("Authentification succesfull, your token is : " + ans.getToken());
+					break;
+				case FAIL :
+					System.out.println("Authentification failed, try again.");
+					break;
+				case ERROR :
+					System.out.println("Error : something happen.");
+					break;
+				default:
+					//can't happen
+					break;
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

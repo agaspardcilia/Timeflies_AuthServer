@@ -43,7 +43,7 @@ public class DBMapper {
 	
 	public static ResultSet executeQuery(String query, String... param) throws SQLException {
 		if (database == null) {
-			ConsoleDisplay.display_errorNotice("ERROR : Can't execute any query : no connection to database.");
+			ConsoleDisplay.display_errorNotice("ERROR, Can't execute any query : no connection to database.");
 			return null;
 		}
 		

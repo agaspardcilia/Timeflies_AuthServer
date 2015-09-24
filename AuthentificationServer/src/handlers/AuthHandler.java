@@ -34,8 +34,8 @@ public class AuthHandler implements Runnable {
 		
 		//init streams
 		try {
-			in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-			out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			ConsoleDisplay.display_errorNotice(socket.getInetAddress().toString() + " : Failed to create streams.");
 			return;
@@ -50,15 +50,18 @@ public class AuthHandler implements Runnable {
 
 		//login/pwd check
 		try {
+			//SUCCESS
 			token = LoginChecker.checkLogin(request);
 			out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.SUCCESS, token));
 		} catch (AuthentificationException e) {
+			//FAIL
 			try {
 				out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.FAIL, null));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		} catch (IOException e) {
+			//ERROR
 			try {
 				out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.ERROR, null));
 			} catch (IOException e1) {
