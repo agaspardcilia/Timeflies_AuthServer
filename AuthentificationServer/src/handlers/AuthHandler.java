@@ -52,6 +52,7 @@ public class AuthHandler implements Runnable {
 		try {
 			//SUCCESS
 			token = LoginChecker.checkLogin(request);
+			LoginChecker.addUUIDToDB(token, socket.getInetAddress().toString());
 			out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.SUCCESS, token));
 		} catch (AuthentificationException e) {
 			//FAIL

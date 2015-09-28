@@ -71,6 +71,7 @@ public class Launcher {
 		} else {
 			Thread connectionHandlerThread = new Thread(connectionHandler);
 			connectionHandlerThread.start();
+			ConsoleDisplay.display_notice("Waiting for connections...");
 		}
 
 
