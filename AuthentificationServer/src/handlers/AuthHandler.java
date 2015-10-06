@@ -12,21 +12,25 @@ import checkers.LoginChecker;
 import exceptions.AuthentificationException;
 import messages.LoginAnswer;
 import messages.LoginRequest;
+import messages.Message;
 import utils.ConsoleDisplay;
 
 
 //XXX Not tested yet
 public class AuthHandler implements Runnable {
 	private Socket socket;
-
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
+	
 	public AuthHandler(Socket socket) {
 		this.socket = socket;
 	}
 
 	@Override
 	public void run() {
-		ObjectInputStream in;
-		ObjectOutputStream out;
+		Message inMessage;
+		
+		
 		LoginRequest request = null;
 		UUID token;
 		
@@ -41,6 +45,14 @@ public class AuthHandler implements Runnable {
 			return;
 		}
 
+		try {
+			inMessage = (Message) in.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//TODO finir la modif qui va permettre de gerer les refresh et les login.
+		
 		//get request
 		try {
 			request = (LoginRequest) in.readObject();
@@ -74,6 +86,14 @@ public class AuthHandler implements Runnable {
 		} catch (IOException e) {
 			ConsoleDisplay.display_errorNotice(socket.getInetAddress().toString() + " : Failed to close socket.");
 		}
+	}
+	
+	private void handleLogin() {
+		
+	}
+	
+	private void handleRefresh() {
+		
 	}
 
 }

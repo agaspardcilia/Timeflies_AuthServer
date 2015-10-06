@@ -36,7 +36,7 @@ public class LoginChecker {
 	
 	public static void addUUIDToDB(UUID token, String ip) {
 		try {
-			DBMapper.executeQuery(ADD_UUID_QUERY, token.toString(), ip, DBMapper.getTime());
+			DBMapper.executeQuery(ADD_UUID_QUERY, ip, token.toString(), DBMapper.getTime());
 		} catch (SQLException e) {
 			ConsoleDisplay.display_errorNotice("Failed to inster UUID into database.");
 			ConsoleDisplay.printStack(e);
