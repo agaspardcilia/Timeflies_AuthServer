@@ -9,8 +9,9 @@ import exceptions.AuthentificationException;
 import handler.args.ArgsHandler;
 import handler.args.handlers.TestModeHandler;
 import handlers.ConnectionsHandler;
-import messages.LoginRequest;
+import messages.login.LoginRequest;
 import settings.SettingsManager;
+import storage.TokenBank;
 import utils.ConsoleDisplay;
 import utils.DBMapper;
 import utils.LibChecker;
@@ -28,6 +29,7 @@ public class Launcher {
 			ArgsHandler.init(args);
 			LibChecker.check();
 			SettingsManager.initSettings();
+			TokenBank.init();
 			connectionHandler = new ConnectionsHandler();
 			DBMapper.init();
 		} catch (Exception e) {

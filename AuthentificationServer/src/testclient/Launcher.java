@@ -1,21 +1,17 @@
 package testclient;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
-import checkers.LoginChecker;
-import messages.LoginAnswer;
-import messages.LoginRequest;
+import messages.login.LoginAnswer;
+import messages.login.LoginRequest;
 
 /**
  * @author alexandre
@@ -42,6 +38,7 @@ public class Launcher {
 				System.out.println("Connection successfull.");
 			else {
 				System.out.println("Connection failed.");
+				socket.close();
 				return;
 			}
 			
@@ -87,6 +84,8 @@ public class Launcher {
 			e.printStackTrace();
 		}
 
+		
+		sc.close();
 	}
 
 	public static String sha1(String message){

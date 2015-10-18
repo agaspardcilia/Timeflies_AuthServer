@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import exceptions.AuthentificationException;
-import messages.LoginRequest;
+import messages.login.LoginRequest;
+import messages.server_login.ServerLoginRequest;
 import utils.ConsoleDisplay;
 import utils.DBMapper;
 
@@ -32,6 +33,11 @@ public class LoginChecker {
 		} else {
 			throw new AuthentificationException();
 		}
+	}
+	
+	public static boolean checkServerLogin(ServerLoginRequest request) {
+		//TODO verify that the user is a server.
+		return isLoginCorrect(request.getLogin(), request.getPwd());
 	}
 	
 	public static void addUUIDToDB(UUID token, String ip) {
