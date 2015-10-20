@@ -26,7 +26,6 @@ import storage.TokenBank;
 import utils.ConsoleDisplay;
 
 
-//XXX Not tested yet
 public class AuthHandler implements Runnable {
 	private final static int RETRY = 5;
 	
@@ -36,6 +35,8 @@ public class AuthHandler implements Runnable {
 	private TokenBank tokenBank;
 	
 	private boolean isAServer;
+	private boolean endRequest;
+	private boolean isFinished;
 
 	public AuthHandler(Socket socket) throws IOException {
 		this.socket = socket;
@@ -43,25 +44,24 @@ public class AuthHandler implements Runnable {
 		in = new ObjectInputStream(socket.getInputStream());
 		tokenBank = null;
 		isAServer = false;
+		endRequest = false;
+		isFinished = false;
 	}
 
 	@Override
 	public void run() {
 		Message inMessage;
 
-		//TODO finish run 
-
-
 		try {
 			inMessage = (Message) in.readObject();
 			switch (inMessage.getMessageType()) { 
-			case LOGIN:
+			case LOGIN: //Login request
 				handleLogin((LoginMessage)inMessage);
 				break;
-			case SERVER_LOGIN :
+			case SERVER_LOGIN : //Server login request
 				handleServerLogin((ServerLoginMessage)inMessage);
 				break;
-			default:
+			default: //Can be a refresh request, but if the request is receive here, the socket is not auth.
 				ConsoleDisplay.display_errorNotice("Unkhown or missused message.");
 				break;
 			}
@@ -72,10 +72,17 @@ public class AuthHandler implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		isFinished = true;
 
 	}
 
 
+	/**
+	 * Handle a login request.
+	 * @param m
+	 * 	Login request.
+	 */
 	private void handleLogin(LoginMessage m) {
 		LoginRequest request = (LoginRequest)m;
 		UUID token;
@@ -88,7 +95,6 @@ public class AuthHandler implements Runnable {
 			out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.SUCCESS, token));
 		} catch (AuthentificationException e) {
 			//FAIL
-			
 			if (!sendMessage(new LoginAnswer(LoginAnswer.AnswerType.FAIL, null))) {
 				close();
 				return;
@@ -99,14 +105,17 @@ public class AuthHandler implements Runnable {
 				close();
 				return;
 			}
-				
 		} finally {
 			close();
 		}
 
 
 	}
-
+	
+	/**
+	 * Handle a server login request. When the server is auth, will launch handleRefresh() to auth and/or refresh tokens.
+	 * @param m
+	 */
 	private void handleServerLogin(ServerLoginMessage m) {
 		ServerLoginRequest request = (ServerLoginRequest)m;
 		tokenBank = TokenBank.getCurrentInstance();
@@ -123,6 +132,7 @@ public class AuthHandler implements Runnable {
 
 	
 	/**
+	 * Check tokens validity and refresh them.
 	 * Handles refresh, will send an error message (code 10) if the client is  not registered as a server.
 	 */
 	private void handleRefresh() {
@@ -136,7 +146,7 @@ public class AuthHandler implements Runnable {
 			RefreshMessage message;
 			RefreshSessionRequest request;
 			RefreshSessionAnswer answer;
-			while (cont) {
+			while (cont && !endRequest) {
 				message = (RefreshMessage)readMessage();
 				
 				//Will stop communications.
@@ -162,6 +172,13 @@ public class AuthHandler implements Runnable {
 		}
 	}
 	
+	/**
+	 * Send a message through the socket.
+	 * @param m 
+	 * 	Message to send.
+	 * @return
+	 * 	True = the message has been send. False = Failed to deliver the message.
+	 */
 	private boolean sendMessage(Message m) {
 		for (int i = 0; i < RETRY; i++) {
 			try {
@@ -175,6 +192,11 @@ public class AuthHandler implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * Read the next message in socket.
+	 * @return
+	 * 	Read message.
+	 */
 	private Message readMessage() {
 		try {
 			return (Message)in.readObject();
@@ -183,81 +205,18 @@ public class AuthHandler implements Runnable {
 		}
 	}
 	
+	/**
+	 * Close the current socket. If you use this, you should stop the current thread.
+	 */
 	private void close() {
 		try {
 			socket.close();
 		} catch (IOException e) {
 		}
 	}
+
 	
-
-	//	@Override
-	//	public void run() {
-	//		Message inMessage;
-	//		
-	//		LoginRequest request = null;
-	//		UUID token;
-	//		
-	//		ConsoleDisplay.display_debug(socket.getInetAddress() + " is performing a connection attemp.");
-	//		
-	//		//init streams
-	//		try {
-	//			out = new ObjectOutputStream(socket.getOutputStream());
-	//			in = new ObjectInputStream(socket.getInputStream());
-	//		} catch (IOException e) {
-	//			ConsoleDisplay.display_errorNotice(socket.getInetAddress().toString() + " : Failed to create streams.");
-	//			return;
-	//		}
-	//
-	//		try {
-	//			inMessage = (Message) in.readObject();
-	//		} catch (ClassNotFoundException | IOException e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//		//TODO finir la modif qui va permettre de gerer les refresh et les login.
-	//		
-	//		//get request
-	//		try {
-	//			request = (LoginRequest) in.readObject();
-	//		} catch (ClassNotFoundException | IOException e) {
-	//			ConsoleDisplay.display_errorNotice(socket.getInetAddress().toString() + " : Failed to read Object.");
-	//		}
-	//
-	//		//login/pwd check
-	//		try {
-	//			//SUCCESS
-	//			token = LoginChecker.checkLogin(request);
-	//			LoginChecker.addUUIDToDB(token, socket.getInetAddress().toString());
-	//			out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.SUCCESS, token));
-	//		} catch (AuthentificationException e) {
-	//			//FAIL
-	//			try {
-	//				out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.FAIL, null));
-	//			} catch (IOException e1) {
-	//				e1.printStackTrace();
-	//			}
-	//		} catch (IOException e) {
-	//			//ERROR
-	//			try {
-	//				out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.ERROR, null));
-	//			} catch (IOException e1) {
-	//				e1.printStackTrace();
-	//			}
-	//		}
-	//		
-	//		//Server mod.
-	//		
-	//		
-	//		
-	//		try {
-	//			socket.close();
-	//		} catch (IOException e) {
-	//			ConsoleDisplay.display_errorNotice(socket.getInetAddress().toString() + " : Failed to close socket.");
-	//		}
-	//	}
-
-
-
-
+	public void requestEnd() {
+		endRequest = true;
+	}
 }

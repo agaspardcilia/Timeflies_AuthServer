@@ -8,11 +8,13 @@ import checkers.LoginChecker;
 import exceptions.AuthentificationException;
 import handler.args.ArgsHandler;
 import handler.args.handlers.TestModeHandler;
+import handlers.CommandHandler;
 import handlers.ConnectionsHandler;
 import messages.login.LoginRequest;
 import settings.SettingsManager;
 import storage.TokenBank;
 import utils.ConsoleDisplay;
+import utils.ConsoleInput;
 import utils.DBMapper;
 import utils.LibChecker;
 
@@ -25,6 +27,7 @@ public class Launcher {
 		ConsoleDisplay.display_splash();
 
 		ConnectionsHandler connectionHandler = null;
+		CommandHandler cmdHandler = null;
 		try {
 			ArgsHandler.init(args);
 			LibChecker.check();
@@ -32,6 +35,7 @@ public class Launcher {
 			TokenBank.init();
 			connectionHandler = new ConnectionsHandler();
 			DBMapper.init();
+			ConsoleInput.init();
 		} catch (Exception e) {
 			ConsoleDisplay.display_errorNotice("Failed to initialize. Stopping the program.");
 			if (ConsoleDisplay.debug)
@@ -39,7 +43,7 @@ public class Launcher {
 			return;
 		}
 
-
+		//Test mode
 		if (TestModeHandler.isTestMode()) {
 			ConsoleDisplay.display_notice("Test mode enable.");
 
@@ -69,11 +73,16 @@ public class Launcher {
 			}
 
 			sc.close();
-
+			
+		//Normal mode
 		} else {
 			Thread connectionHandlerThread = new Thread(connectionHandler);
 			connectionHandlerThread.start();
 			ConsoleDisplay.display_notice("Waiting for connections...");
+			cmdHandler = new CommandHandler(connectionHandler);
+			Thread t = new Thread(cmdHandler);
+			t.start();
+			
 		}
 
 

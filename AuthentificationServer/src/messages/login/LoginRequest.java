@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /*
  * LoginRequest.java
- * This message is the way to give the login and password to the server. They must be hashed before.(TODO select hash method certainly sha3)
+ * This message is the way to give the login and password to the server. They must be hashed before.
  */
 public class LoginRequest extends LoginMessage implements Serializable {
 	private static final long serialVersionUID = -433397453205335783L;
