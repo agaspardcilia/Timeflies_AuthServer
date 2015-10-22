@@ -2,6 +2,7 @@ package handlers;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.LinkedList;
 
 import settings.SettingsManager;
@@ -39,6 +40,8 @@ public class ConnectionsHandler implements Runnable {
 					
 					thread = new Thread(crt);
 					thread.start();
+				} catch (SocketException e) {
+					//TODO only handle bad socket closing.
 				} catch (IOException e) {
 					ConsoleDisplay.printStack(e);
 				}
@@ -51,6 +54,10 @@ public class ConnectionsHandler implements Runnable {
 			stopHandlers();
 		
 		endRequest = true;
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+		}
 	}
 	
 	private void stopHandlers() {

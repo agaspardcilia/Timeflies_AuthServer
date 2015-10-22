@@ -36,7 +36,6 @@ public class AuthHandler implements Runnable {
 	
 	private boolean isAServer;
 	private boolean endRequest;
-	private boolean isFinished;
 
 	public AuthHandler(Socket socket) throws IOException {
 		this.socket = socket;
@@ -45,7 +44,6 @@ public class AuthHandler implements Runnable {
 		tokenBank = null;
 		isAServer = false;
 		endRequest = false;
-		isFinished = false;
 	}
 
 	@Override
@@ -73,8 +71,6 @@ public class AuthHandler implements Runnable {
 			e.printStackTrace();
 		}
 		
-		isFinished = true;
-
 	}
 
 

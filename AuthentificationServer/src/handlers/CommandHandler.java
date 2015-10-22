@@ -28,14 +28,14 @@ public class CommandHandler implements Runnable{
 	}
 	
 	private void initCommand() {
-		commands.put(StopCmd.getCmdTrigger(), new StopCmd(connectionHandler, this));
+		commands.put(StopCmd.getCmdTrigger().toLowerCase() , new StopCmd(connectionHandler, this));
 	}
 
 	private void handle() {
 		try {
 			String[] input = cInput.nextLine().split(" ");
 			String cmd = input[0];
-			commands.get(cmd).handle(input);
+			commands.get(cmd.toLowerCase()).handle(input);
 			
 		} catch (NullPointerException e) {
 			ConsoleDisplay.display_notice("Wrong input.");

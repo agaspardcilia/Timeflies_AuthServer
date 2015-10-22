@@ -17,9 +17,9 @@ import utils.ConsoleDisplay;
 import utils.ConsoleInput;
 import utils.DBMapper;
 import utils.LibChecker;
+import utils.ThreadManager;
 
 public class Launcher {
-
 
 	public static void main(String[] args) {
 
@@ -29,6 +29,8 @@ public class Launcher {
 		ConnectionsHandler connectionHandler = null;
 		CommandHandler cmdHandler = null;
 		try {
+			ThreadManager.init();
+			
 			ArgsHandler.init(args);
 			LibChecker.check();
 			SettingsManager.initSettings();
@@ -77,16 +79,19 @@ public class Launcher {
 		//Normal mode
 		} else {
 			Thread connectionHandlerThread = new Thread(connectionHandler);
+			ThreadManager.getCurrentInstance().addThread(connectionHandlerThread);
 			connectionHandlerThread.start();
 			ConsoleDisplay.display_notice("Waiting for connections...");
 			cmdHandler = new CommandHandler(connectionHandler);
 			Thread t = new Thread(cmdHandler);
 			t.start();
+			ThreadManager.getCurrentInstance().addThread(t);
+			
 			
 		}
 
 
-
+		
 	}
 
 
@@ -110,6 +115,7 @@ public class Launcher {
 		return digest;
 	}
 
+	
 
 
 

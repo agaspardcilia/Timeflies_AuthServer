@@ -4,6 +4,7 @@ import handlers.CommandHandler;
 import handlers.ConnectionsHandler;
 import handlers.commands.Command;
 import utils.ConsoleDisplay;
+import utils.ThreadManager;
 
 /**
 * @author alexandre
@@ -20,14 +21,13 @@ public class StopCmd extends Command {
 		this.cmdHandler = commandHandler;
 	}
 	
-	//TODO completely stop the program.
 	@Override
 	public void handle(String[] args) {
 		ConsoleDisplay.display_notice("Stopping...");
 		
 		cHandler.stopListen();
 		cmdHandler.requestStop();
-		
+		ThreadManager.getCurrentInstance().killThreads();
 	}
 
 	public static String getCmdTrigger() {
