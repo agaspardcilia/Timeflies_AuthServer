@@ -30,7 +30,7 @@ public class StopCmd extends Command {
 		ThreadManager.getCurrentInstance().killThreads();
 	}
 
-	public static String getCmdTrigger() {
+	public String getCommandTrigger() {
 		return CMD_TRIGGER;
 	}
 	

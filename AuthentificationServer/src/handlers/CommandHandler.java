@@ -3,6 +3,7 @@ package handlers;
 import java.util.HashMap;
 
 import handlers.commands.Command;
+import handlers.commands.impl.PortCmd;
 import handlers.commands.impl.StopCmd;
 import utils.ConsoleDisplay;
 import utils.ConsoleInput;
@@ -28,7 +29,11 @@ public class CommandHandler implements Runnable{
 	}
 	
 	private void initCommand() {
-		commands.put(StopCmd.getCmdTrigger().toLowerCase() , new StopCmd(connectionHandler, this));
+		StopCmd stop = new StopCmd(connectionHandler, this);
+		PortCmd port = new PortCmd();
+		
+		commands.put(stop.getCommandTrigger() , stop);
+		commands.put(port.getCommandTrigger(), port);
 	}
 
 	private void handle() {

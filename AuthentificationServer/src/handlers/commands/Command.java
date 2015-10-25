@@ -17,4 +17,6 @@ public abstract class Command {
 	public String[] splitArgs(String rawArgs) {
 		return rawArgs.split(SPLIT_REGEX);
 	}
+	
+	public abstract String getCommandTrigger();
 }
