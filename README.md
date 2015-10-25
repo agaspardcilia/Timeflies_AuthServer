@@ -5,3 +5,9 @@ Params :
 
   -d : debug mode. Will display exceptions stack trace and other debug tools.
   
+Commands :
+
+"port" : will display the used port.
+
+"stop" : will stop the program.
+  
