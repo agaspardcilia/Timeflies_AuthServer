@@ -49,7 +49,6 @@ public class AuthHandler implements Runnable {
 	@Override
 	public void run() {
 		Message inMessage;
-
 		try {
 			inMessage = (Message) in.readObject();
 			switch (inMessage.getMessageType()) { 
@@ -87,7 +86,7 @@ public class AuthHandler implements Runnable {
 		try {
 			//SUCCESS
 			token = LoginChecker.checkLogin(request);
-			LoginChecker.addUUIDToDB(token, socket.getInetAddress().toString());
+			TokenBank.getCurrentInstance().addToken(token);
 			out.writeObject(new LoginAnswer(LoginAnswer.AnswerType.SUCCESS, token));
 		} catch (AuthentificationException e) {
 			//FAIL

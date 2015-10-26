@@ -5,6 +5,7 @@ import java.util.HashMap;
 import handlers.commands.Command;
 import handlers.commands.impl.PortCmd;
 import handlers.commands.impl.StopCmd;
+import handlers.commands.impl.TokenListCmd;
 import utils.ConsoleDisplay;
 import utils.ConsoleInput;
 
@@ -31,9 +32,11 @@ public class CommandHandler implements Runnable{
 	private void initCommand() {
 		StopCmd stop = new StopCmd(connectionHandler, this);
 		PortCmd port = new PortCmd();
+		TokenListCmd tok = new TokenListCmd();
 		
 		commands.put(stop.getCommandTrigger() , stop);
 		commands.put(port.getCommandTrigger(), port);
+		commands.put(tok.getCommandTrigger(), tok);
 	}
 
 	private void handle() {

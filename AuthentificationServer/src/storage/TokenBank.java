@@ -71,4 +71,8 @@ public class TokenBank {
 		return currentInstance;
 	}
 	
+	
+	public HashMap<UUID, Date> getTokens() {
+		return tokens;
+	}
 }
