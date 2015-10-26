@@ -10,4 +10,6 @@ Commands :
 "port" : will display the used port.
 
 "stop" : will stop the program.
-  
+
+
+"tokenlist" : will displau all the tokens contains in the current TokenBank. Mostly for debug purposes.
