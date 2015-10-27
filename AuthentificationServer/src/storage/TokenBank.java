@@ -1,8 +1,8 @@
 package storage;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import utils.ConsoleDisplay;
 
@@ -15,7 +15,7 @@ public class TokenBank {
 	
 	private static TokenBank currentInstance;
 	
-	private HashMap<UUID, Date> tokens;
+	private ConcurrentHashMap<UUID, Date> tokens;
 	
 	
 	public static void init() {
@@ -32,7 +32,7 @@ public class TokenBank {
 	
 	public TokenBank() {
 		
-		tokens = new HashMap<UUID, Date>();
+		tokens = new ConcurrentHashMap<UUID, Date>();
 		
 	}
 	
@@ -58,7 +58,6 @@ public class TokenBank {
 		}
 	}
 	
-	//TODO change the date operation to something recent.
 	public boolean isTokenValid(UUID token) {
 		try {
 			return tokens.get(token).getTime() + TOKEN_TIMEOUT > System.currentTimeMillis();			
@@ -72,7 +71,7 @@ public class TokenBank {
 	}
 	
 	
-	public HashMap<UUID, Date> getTokens() {
+	public ConcurrentHashMap<UUID, Date> getTokens() {
 		return tokens;
 	}
 }

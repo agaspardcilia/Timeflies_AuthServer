@@ -1,8 +1,8 @@
 package handlers.commands.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import handlers.commands.Command;
 import storage.TokenBank;
@@ -19,7 +19,7 @@ public class TokenListCmd extends Command {
 	
 	@Override
 	public void handle(String[] args) {
-		HashMap<UUID, Date> tokens = TokenBank.getCurrentInstance().getTokens();
+		ConcurrentHashMap<UUID, Date> tokens = TokenBank.getCurrentInstance().getTokens();
 		
 		ConsoleDisplay.display_notice(tokens.size() + " tokens in bank.");
 		ConsoleDisplay.display_notice("Display all ? (y/n)");
