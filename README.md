@@ -1,5 +1,5 @@
 # Timeflies_AuthServer
-This program is the authentification server made for Timeflies.
+This program is the authentication server made for Timeflies.
 
 Params :
 
