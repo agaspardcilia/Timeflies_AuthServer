@@ -48,33 +48,7 @@ public class Launcher {
 		//Test mode
 		if (TestModeHandler.isTestMode()) {
 			ConsoleDisplay.display_notice("Test mode enable.");
-
-			String username;
-			String password;
-			Scanner sc = new Scanner(System.in);
-
-			System.out.print("Username : ");
-			username = sc.nextLine();
-
-			System.out.print("Password : ");
-			//Only works with a shell terminal.
-			if (System.console() != null) {
-				password = sha1(new String(System.console().readPassword()));
-			} else {
-				password = sha1(sc.nextLine());
-			}
-
-			LoginRequest request = new LoginRequest(username, password);
-
-			UUID token;
-			try {
-				token = LoginChecker.checkLogin(request);
-				System.out.println("token : " + token);
-			} catch (AuthentificationException e) {
-				System.out.println("Authentification failed.");
-			}
-
-			sc.close();
+			ConsoleDisplay.display_notice("Test mode is not available anymore.");
 			
 		//Normal mode
 		} else {
@@ -87,10 +61,7 @@ public class Launcher {
 			t.start();
 			ThreadManager.getCurrentInstance().addThread(t);
 			
-			
 		}
-
-
 		
 	}
 

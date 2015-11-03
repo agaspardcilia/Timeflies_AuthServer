@@ -27,9 +27,9 @@ public class LoginChecker {
 		return false;
 	}
 	
-	public static UUID checkLogin(LoginRequest request) throws AuthentificationException {
+	public static boolean checkLogin(LoginRequest request) throws AuthentificationException {
 		if(isLoginCorrect(request.getLogin(), request.getPassWord())) {
-			return UUID.randomUUID();
+			return true;
 		} else {
 			throw new AuthentificationException();
 		}

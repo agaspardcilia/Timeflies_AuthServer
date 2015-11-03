@@ -1,5 +1,6 @@
 package storage;
 
+import java.net.InetAddress;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,7 @@ public class TokenBank {
 	
 	private static TokenBank currentInstance;
 	
-	private ConcurrentHashMap<UUID, Date> tokens;
+	private ConcurrentHashMap<UUID, UserInformation> tokens;
 	
 	
 	public static void init() {
@@ -32,16 +33,24 @@ public class TokenBank {
 	
 	public TokenBank() {
 		
-		tokens = new ConcurrentHashMap<UUID, Date>();
+		tokens = new ConcurrentHashMap<UUID, UserInformation>();
 		
 	}
 	
-	public boolean addToken(UUID token) {
-		if (tokens.keySet().contains(token))
-			return false;
-		else {
-			tokens.put(token, new Date(System.currentTimeMillis()));
-			return true;
+	//TODO check if it's still the same ip on the first case.
+	public UUID addToken(String username, InetAddress ip) {
+		UserInformation crt = new UserInformation(username, new Date(System.currentTimeMillis()), ip);
+		UUID token;
+		if (tokens.containsValue(crt)) {
+			for (UUID k : tokens.keySet()) 
+				if (tokens.get(k).equals(crt))
+					return k;
+			
+			return null;
+		} else {
+			token = UUID.randomUUID();
+			tokens.put(token, crt);
+			return token;
 		}
 	}
 	
@@ -53,14 +62,15 @@ public class TokenBank {
 		if (!isTokenValid(token))
 			return false;
 		else {
-			tokens.put(token, new Date(System.currentTimeMillis()));
+			tokens.get(token).setRefreshToCurrentTime();
 			return true;
 		}
 	}
 	
+	//TODO define new token validity condition.
 	public boolean isTokenValid(UUID token) {
 		try {
-			return tokens.get(token).getTime() + TOKEN_TIMEOUT > System.currentTimeMillis();			
+			return tokens.get(token).getLastRefresh().getTime() + TOKEN_TIMEOUT > System.currentTimeMillis();			
 		} catch (NullPointerException e) {
 			return false;
 		}
@@ -71,7 +81,7 @@ public class TokenBank {
 	}
 	
 	
-	public ConcurrentHashMap<UUID, Date> getTokens() {
+	public ConcurrentHashMap<UUID, UserInformation> getTokens() {
 		return tokens;
 	}
 }
