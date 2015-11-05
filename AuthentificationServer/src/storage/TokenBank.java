@@ -43,8 +43,16 @@ public class TokenBank {
 		UUID token;
 		if (tokens.containsValue(crt)) {
 			for (UUID k : tokens.keySet()) 
-				if (tokens.get(k).equals(crt))
-					return k;
+				if (tokens.get(k).equals(crt)) {
+					//Bad InetAddress.
+					if (!tokens.get(k).getIp().equals(ip)) {
+						tokens.remove(k);
+						token  = UUID.randomUUID();
+						tokens.put(token, crt);
+						return token;
+					} else
+						return k;
+				}
 			
 			return null;
 		} else {

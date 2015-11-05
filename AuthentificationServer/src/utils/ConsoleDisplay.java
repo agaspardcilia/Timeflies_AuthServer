@@ -7,7 +7,7 @@ package utils;
  */
 public class ConsoleDisplay {
 	private final static String PROGRAM_NAME = "Timeflies authentification server";
-	private final static String VERSION = "0.0.81";
+	private final static String VERSION = "0.1";
 	private final static String AUTHOR = "A.Gaspard Cilia";
 	
 	public static boolean debug = false;

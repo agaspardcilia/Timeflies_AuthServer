@@ -1,16 +1,11 @@
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
-import java.util.UUID;
 
-import checkers.LoginChecker;
-import exceptions.AuthentificationException;
 import handler.args.ArgsHandler;
 import handler.args.handlers.TestModeHandler;
 import handlers.CommandHandler;
 import handlers.ConnectionsHandler;
-import messages.login.LoginRequest;
 import settings.SettingsManager;
 import storage.TokenBank;
 import utils.ConsoleDisplay;
