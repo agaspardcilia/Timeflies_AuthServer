@@ -32,13 +32,11 @@ public class TokenBank {
 	}
 	
 	public TokenBank() {
-		
 		tokens = new ConcurrentHashMap<UUID, UserInformation>();
-		
 	}
 	
 	//TODO check if it's still the same ip on the first case.
-	public UUID addToken(String username, InetAddress ip) {
+	public synchronized UUID addToken(String username, InetAddress ip) {
 		UserInformation crt = new UserInformation(username, new Date(System.currentTimeMillis()), ip);
 		UUID token;
 		if (tokens.containsValue(crt)) {
@@ -62,11 +60,11 @@ public class TokenBank {
 		}
 	}
 	
-	public void removeToken(UUID token) {
+	public synchronized void removeToken(UUID token) {
 		tokens.remove(token);
 	}
 	
-	public boolean refreshToken(UUID token) {
+	public synchronized boolean refreshToken(UUID token) {
 		if (!isTokenValid(token))
 			return false;
 		else {
@@ -76,7 +74,7 @@ public class TokenBank {
 	}
 	
 	//TODO define new token validity condition.
-	public boolean isTokenValid(UUID token) {
+	public synchronized boolean isTokenValid(UUID token) {
 		try {
 			return tokens.get(token).getLastRefresh().getTime() + TOKEN_TIMEOUT > System.currentTimeMillis();			
 		} catch (NullPointerException e) {
